@@ -1262,6 +1262,152 @@
             }
         }
 
+        /* Daily Popup Styles */
+        .daily-popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .daily-popup-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .daily-popup {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 40px var(--shadow);
+            transform: translateY(50px);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .daily-popup-overlay.show .daily-popup {
+            transform: translateY(0);
+        }
+
+        .daily-popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .daily-popup-title {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .daily-popup-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .daily-popup-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .daily-popup-close:hover {
+            background: var(--accent);
+            color: var(--button-text);
+        }
+
+        .daily-popup-quote {
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .daily-popup-author {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-align: right;
+            margin-bottom: 1.5rem;
+        }
+
+        .daily-popup-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .daily-popup-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: var(--button-bg);
+            color: var(--button-text);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 44px;
+        }
+
+        .daily-popup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .daily-popup-footer {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-style: italic;
+        }
+
+        /* Enhanced Social Sharing Modal */
+
+        /* Swipe to dismiss */
+        .daily-popup {
+            touch-action: pan-y;
+        }
+
+        @media (max-width: 768px) {
+            .daily-popup {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+        }
 
         /* Interactive Elements Styles */
         .controls {
@@ -2550,6 +2696,28 @@
         ↑
     </button>
 
+    <!-- Daily Morning Popup -->
+    <div class="daily-popup-overlay" id="dailyPopupOverlay">
+        <div class="daily-popup" id="dailyPopup">
+            <div class="daily-popup-header">
+                <div>
+                    <h3 class="daily-popup-title">🌅 Daily Wisdom</h3>
+                    <p class="daily-popup-date" id="dailyPopupDate"></p>
+                </div>
+                <button class="daily-popup-close" onclick="closeDailyPopup()">×</button>
+            </div>
+            <div class="daily-popup-quote" id="dailyPopupQuote"></div>
+            <div class="daily-popup-author" id="dailyPopupAuthor"></div>
+            <div class="daily-popup-actions">
+                <button class="daily-popup-btn" onclick="shareDailyPopupQuote()">📤 Share</button>
+                <button class="daily-popup-btn" onclick="addDailyPopupToFavorites()">❤️ Save</button>
+                <button class="daily-popup-btn" onclick="closeDailyPopup()">Close</button>
+            </div>
+            <div class="daily-popup-footer">
+                Come back tomorrow for more wisdom!
+            </div>
+        </div>
+    </div>
 
 
     <!-- Professional Tribute Footer -->
@@ -2788,14 +2956,99 @@
         });
 
         
+        // Daily Popup Management
+        let currentPopupQuote = null;
+        
+        function checkDailyPopup() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const today = now.toDateString();
+            const lastPopupDate = localStorage.getItem('lastDailyPopup');
+            
+            // Show popup if it's 9 AM and we haven't shown it today
+            if (currentHour >= 9 && lastPopupDate !== today) {
+                setTimeout(() => {
+                    showDailyPopup();
+                }, 1000); // Small delay for better UX
+            }
+        }
+        
+        function showDailyPopup() {
+            const randomQuote = allQuotes[Math.floor(Math.random() * allQuotes.length)];
+            currentPopupQuote = randomQuote;
+            
+            document.getElementById('dailyPopupDate').textContent = new Date().toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            document.getElementById('dailyPopupQuote').textContent = `"${randomQuote.text}"`;
+            document.getElementById('dailyPopupAuthor').textContent = `— ${randomQuote.author}`;
+            
+            const overlay = document.getElementById('dailyPopupOverlay');
+            overlay.classList.add('show');
+            
+            // Auto-dismiss after 30 seconds
+            setTimeout(() => {
+                if (overlay.classList.contains('show')) {
+                    closeDailyPopup();
+                }
+            }, 30000);
+            
+            // Mark as shown today
+            localStorage.setItem('lastDailyPopup', new Date().toDateString());
+        }
+        
+        function closeDailyPopup() {
+            const overlay = document.getElementById('dailyPopupOverlay');
+            overlay.classList.remove('show');
+        }
         
         
         
         
         
         
+        // Touch/Swipe handling for mobile
+        let startY = 0;
+        let currentY = 0;
+        let isDragging = false;
         
-        
+        function setupTouchHandlers() {
+            const dailyPopup = document.getElementById('dailyPopup');
+            if (dailyPopup) {
+                dailyPopup.addEventListener('touchstart', (e) => {
+                    startY = e.touches[0].clientY;
+                    isDragging = true;
+                });
+                
+                dailyPopup.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    currentY = e.touches[0].clientY;
+                    const diff = currentY - startY;
+                    
+                    if (diff > 50) { // Swipe down to dismiss
+                        closeDailyPopup();
+                        isDragging = false;
+                    }
+                });
+                
+                dailyPopup.addEventListener('touchend', () => {
+                    isDragging = false;
+                });
+            }
+            
+            // Close modals when clicking outside
+            const dailyOverlay = document.getElementById('dailyPopupOverlay');
+            if (dailyOverlay) {
+                dailyOverlay.addEventListener('click', (e) => {
+                    if (e.target === e.currentTarget) {
+                        closeDailyPopup();
+                    }
+                });
+            }
             
             const socialModal = document.getElementById('socialShareModal');
             if (socialModal) {
@@ -3022,7 +3275,10 @@
             makeQuotesClickable();
             initializePWA();
             initializeSentenceSharing();
+            setupTouchHandlers();
             
+            // Check for daily popup
+            checkDailyPopup();
         });
 
         function initializeQuotes() {
