@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lky-quotes-v1';
+const CACHE_NAME = 'lky-quotes-v2';
 const urlsToCache = [
   './',
   './index.html',
