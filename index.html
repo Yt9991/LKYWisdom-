@@ -2708,11 +2708,6 @@
             </div>
             <div class="daily-popup-quote" id="dailyPopupQuote"></div>
             <div class="daily-popup-author" id="dailyPopupAuthor"></div>
-            <div class="daily-popup-actions">
-                <button class="daily-popup-btn" onclick="shareDailyPopupQuote()">📤 Share</button>
-                <button class="daily-popup-btn" onclick="addDailyPopupToFavorites()">❤️ Save</button>
-                <button class="daily-popup-btn" onclick="closeDailyPopup()">Close</button>
-            </div>
             <div class="daily-popup-footer">
                 Come back tomorrow for more wisdom!
             </div>
@@ -2976,16 +2971,20 @@
         function showDailyPopup() {
             const randomQuote = allQuotes[Math.floor(Math.random() * allQuotes.length)];
             currentPopupQuote = randomQuote;
-            
+
             document.getElementById('dailyPopupDate').textContent = new Date().toLocaleDateString('en-US', {
                 weekday: 'long',
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
             });
-            
-            document.getElementById('dailyPopupQuote').textContent = `"${randomQuote.text}"`;
-            document.getElementById('dailyPopupAuthor').textContent = `— ${randomQuote.author}`;
+
+            // Extract text from DOM element
+            const quoteText = randomQuote.querySelector('.quote-text').textContent;
+            const quoteAuthor = randomQuote.querySelector('.quote-author')?.textContent || 'Lee Kuan Yew';
+
+            document.getElementById('dailyPopupQuote').textContent = `"${quoteText}"`;
+            document.getElementById('dailyPopupAuthor').textContent = `— ${quoteAuthor}`;
             
             const overlay = document.getElementById('dailyPopupOverlay');
             overlay.classList.add('show');
