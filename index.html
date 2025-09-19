@@ -2768,10 +2768,6 @@
                                 <span class="btn-icon">🔗</span>
                                 <span class="btn-text">Share App</span>
                             </button>
-                            <button onclick="showInstallGuide()" class="action-btn secondary-btn">
-                                <span class="btn-icon">📲</span>
-                                <span class="btn-text">Install PWA</span>
-                            </button>
                         </div>
                         <p class="share-note">Discover, share, and carry wisdom with you</p>
                     </div>
@@ -3162,12 +3158,21 @@
             modal.innerHTML = `
                 <div class="install-guide-content">
                     <div class="install-guide-header">
-                        <h3>📲 Install LKY Quotes App</h3>
+                        <h3>📖 User Guide & Installation</h3>
                         <button onclick="closeInstallGuide()" class="close-guide-btn">×</button>
                     </div>
                     <div class="install-guide-body">
                         <div class="install-step">
-                            <h4>📱 On iPhone/iPad:</h4>
+                            <h4>🔍 How to Use</h4>
+                            <ul>
+                                <li>Search quotes by keyword or browse categories</li>
+                                <li>Click ❤️ to save favorites</li>
+                                <li>Share quotes with friends</li>
+                                <li>Get daily inspiration from LKY's wisdom</li>
+                            </ul>
+                        </div>
+                        <div class="install-step">
+                            <h4>📱 Install as App (iPhone/iPad)</h4>
                             <ol>
                                 <li>Open this page in Safari</li>
                                 <li>Tap the Share button (square with arrow)</li>
@@ -3176,7 +3181,7 @@
                             </ol>
                         </div>
                         <div class="install-step">
-                            <h4>🤖 On Android:</h4>
+                            <h4>🤖 Install as App (Android)</h4>
                             <ol>
                                 <li>Open this page in Chrome</li>
                                 <li>Tap the three dots menu (⋮)</li>
@@ -3205,37 +3210,43 @@
         // User guide modal
         function showUserGuide() {
             const modal = document.createElement('div');
-            modal.className = 'user-guide-modal';
+            modal.className = 'user-guide-modal install-guide-modal';
             modal.innerHTML = `
                 <div class="install-guide-content">
                     <div class="install-guide-header">
-                        <h3>📖 How to Use This App</h3>
+                        <h3>📖 User Guide & Installation</h3>
                         <button onclick="closeUserGuide()" class="close-guide-btn">×</button>
                     </div>
                     <div class="install-guide-body">
                         <div class="install-step">
-                            <h4>🔍 Search & Filter</h4>
+                            <h4>🔍 How to Use</h4>
                             <ul>
-                                <li>Use the search box to find specific quotes</li>
-                                <li>Filter by categories (Leadership, Education, etc.)</li>
-                                <li>Click "Random Quote" for inspiration</li>
+                                <li>Search quotes by keyword or browse categories</li>
+                                <li>Click ❤️ to save favorites</li>
+                                <li>Share quotes with friends</li>
+                                <li>Get daily inspiration from LKY's wisdom</li>
                             </ul>
                         </div>
                         <div class="install-step">
-                            <h4>❤️ Save Favorites</h4>
-                            <ul>
-                                <li>Click the heart icon on any quote to save it</li>
-                                <li>View all saved quotes using "Show Favorites"</li>
-                                <li>Share individual quotes with friends</li>
-                            </ul>
+                            <h4>📱 Install as App (iPhone/iPad)</h4>
+                            <ol>
+                                <li>Open this page in Safari</li>
+                                <li>Tap the Share button (square with arrow)</li>
+                                <li>Scroll down and tap "Add to Home Screen"</li>
+                                <li>Tap "Add" to install</li>
+                            </ol>
                         </div>
                         <div class="install-step">
-                            <h4>📱 Daily Wisdom</h4>
-                            <ul>
-                                <li>Get a daily quote popup each morning</li>
-                                <li>Install as PWA for offline access</li>
-                                <li>Subscribe to newsletter for email quotes</li>
-                            </ul>
+                            <h4>🤖 Install as App (Android)</h4>
+                            <ol>
+                                <li>Open this page in Chrome</li>
+                                <li>Tap the three dots menu (⋮)</li>
+                                <li>Tap "Add to Home screen"</li>
+                                <li>Tap "Add" to install</li>
+                            </ol>
+                        </div>
+                        <div class="install-benefit">
+                            <p><strong>Benefits:</strong> Faster access, offline reading, and daily wisdom notifications!</p>
                         </div>
                     </div>
                 </div>
